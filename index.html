@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hành Trình Ký Ức ❤️</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    width:100%;
+    height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+}
+
+/* BACKGROUND */
+
+#bg{
+
+    position:fixed;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+    object-position:center;
+
+    transition:1s;
+
+    z-index:-2;
+}
+
+.overlay{
+
+    position:fixed;
+    inset:0;
+
+    background:
+    rgba(0,0,0,.35);
+
+    z-index:-1;
+}
+
+/* MAIN */
+
+.container{
+
+    height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    padding:20px;
+}
+
+#question{
+
+    color:white;
+
+    font-size:34px;
+
+    max-width:800px;
+
+    line-height:1.5;
+
+    text-shadow:
+    0 0 15px rgba(0,0,0,.5);
+
+    animation:fade .8s;
+}
+
+/* BUTTON AREA */
+
+.buttons{
+
+    margin-top:40px;
+
+    width:340px;
+    height:220px;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:14px 28px;
+
+    border-radius:15px;
+
+    font-size:18px;
+
+    transition:.25s;
+}
+
+button:active{
+
+    transform:scale(.95);
+}
+
+#yes{
+
+    background:#ff5f9e;
+
+    color:white;
+
+    box-shadow:
+    0 0 20px rgba(255,95,158,.4);
+}
+
+#yes:hover{
+
+    transform:scale(1.05);
+}
+
+#no{
+
+    position:absolute;
+
+    left:190px;
+    top:0;
+
+    background:white;
+}
+
+/* FINAL */
+
+#final{
+
+    display:none;
+
+    color:white;
+
+    font-size:38px;
+
+    text-shadow:
+    0 0 20px rgba(255,255,255,.5);
+}
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    #question{
+
+        font-size:24px;
+
+        max-width:90%;
+    }
+
+    .buttons{
+
+        width:280px;
+        height:220px;
+    }
+
+    button{
+
+        font-size:16px;
+
+        padding:12px 22px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<img id="bg" src="beach.jpg">
+
+<div class="overlay"></div>
+
+<audio id="music" loop>
+    <source src="1.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+    <h1 id="question">
+        Bạn có muốn bắt đầu hành trình ký ức không? 🌊
+    </h1>
+
+    <div class="buttons">
+
+        <button id="yes">
+            Có ❤️
+        </button>
+
+        <button id="no">
+            Không 😆
+        </button>
+
+    </div>
+
+    <div id="final">
+        💖 Cảm ơn vì đã đồng hành 💖
+    </div>
+
+</div>
+
+<script>
+
+const scenes = [
+
+{
+bg:"beach.jpg",
+text:"Bạn có muốn bắt đầu hành trình ký ức không? 🌊"
+},
+
+{
+bg:"sunset.jpg",
+text:"Bạn đã sẵn sàng xem điều tiếp theo chưa? 🌅"
+},
+
+{
+bg:"night.jpg",
+text:"Có một vài điều mình muốn kể cho bạn ✨"
+},
+
+{
+bg:"galaxy.jpg",
+text:"Bạn có muốn mở khóa ký ức cuối cùng không? 🌌"
+},
+
+{
+bg:"heart.jpg",
+text:"Cảm ơn vì đã xuất hiện trong cuộc đời mình ❤️"
+}
+
+];
+
+let step = 0;
+
+const bg =
+document.getElementById("bg");
+
+const q =
+document.getElementById("question");
+
+const yes =
+document.getElementById("yes");
+
+const no =
+document.getElementById("no");
+
+const music =
+document.getElementById("music");
+
+const finalBox =
+document.getElementById("final");
+
+/* NÚT KHÔNG */
+
+function moveNo(){
+
+    const area =
+    document.querySelector(".buttons");
+
+    const maxX =
+    area.clientWidth -
+    no.offsetWidth;
+
+    const maxY =
+    area.clientHeight -
+    no.offsetHeight;
+
+    const x =
+    Math.random() * maxX;
+
+    const y =
+    Math.random() * maxY;
+
+    no.style.left =
+    x + "px";
+
+    no.style.top =
+    y + "px";
+}
+
+no.addEventListener(
+"mouseover",
+moveNo
+);
+
+no.addEventListener(
+"click",
+moveNo
+);
+
+no.addEventListener(
+"touchstart",
+(e)=>{
+
+    e.preventDefault();
+
+    moveNo();
+}
+);
+
+/* NÚT CÓ */
+
+yes.onclick = ()=>{
+
+    if(step===0){
+
+        music.play().catch(()=>{});
+    }
+
+    step++;
+
+    if(step >= scenes.length){
+
+        q.style.display =
+        "none";
+
+        document
+        .querySelector(".buttons")
+        .style.display =
+        "none";
+
+        finalBox.style.display =
+        "block";
+
+        return;
+    }
+
+    bg.style.opacity = 0;
+
+    setTimeout(()=>{
+
+        bg.src =
+        scenes[step].bg;
+
+        q.innerHTML =
+        scenes[step].text;
+
+        bg.style.opacity = 1;
+
+    },300);
+
+};
+
+</script>
+
+</body>
+</html>
